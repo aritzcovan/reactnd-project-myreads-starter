@@ -147,6 +147,10 @@ button:active {
   font-size: 0.8em;
 }
 
+.book-authors li {
+list-style-type: none;
+}
+
 .book-title {
   margin-top: 10px;
 }
@@ -196,3 +200,4 @@ button:active {
   text-align: center;
   font-size: 0.8em;
 }
+

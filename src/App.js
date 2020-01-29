@@ -18,7 +18,8 @@ class BooksApp extends React.Component {
     books: {
       currentlyReading: [],
       wantToRead: [],
-      read: []
+      read: [],
+      none: []
     },
     CR: 'currentlyReading',
     R: 'read',
@@ -33,10 +34,14 @@ class BooksApp extends React.Component {
   loadData() {
     BooksAPI.getAll()
       .then((response) => {
-        this.setAssignment(this.state.CR, this.responseFilter(response, this.state.CR));
-        this.setAssignment(this.state.R, this.responseFilter(response, this.state.R));
-        this.setAssignment(this.state.WTR, this.responseFilter(response, this.state.WTR));
+        this.processResponse(response);
       });
+  }
+
+  processResponse = (response) => {
+    this.setAssignment(this.state.CR, this.responseFilter(response, this.state.CR));
+    this.setAssignment(this.state.R, this.responseFilter(response, this.state.R));
+    this.setAssignment(this.state.WTR, this.responseFilter(response, this.state.WTR));
   }
 
   setAssignment = (prop, books) => {
@@ -55,12 +60,11 @@ class BooksApp extends React.Component {
       });
   }
 
-
   render() {
     return (
       <div className="app">
-        
-        <Route path='/' exact render={() =>(
+
+        <Route path='/' exact render={() => (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -77,7 +81,9 @@ class BooksApp extends React.Component {
           </div>
         )} />
 
-        <Route path='/search' component={SearchPage} />
+        <Route path='/search' render={() => (
+          <SearchPage handleShelfChange={this.onShelfChange} bookCase={this.state.books}  />
+        )} />
 
       </div>
     );
