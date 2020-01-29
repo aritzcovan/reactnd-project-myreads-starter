@@ -14,7 +14,7 @@ class SearchPage extends Component {
 
     search = (event) => {
         const query = event.target.value;
-        this.setState({query});
+        this.setState({query: query});
         if(query){
             BooksAPI.search(query)
                 .then(response => {
