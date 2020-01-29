@@ -9,54 +9,30 @@ import { Route } from 'react-router-dom';
 
 class BooksApp extends React.Component {
   state = {
-    books: {
-      currentlyReading: [],
-      wantToRead: [],
-      read: []
-    },
-    CR: 'currentlyReading',
-    R: 'read',
-    WTR: 'wantToRead'
+    books: []
   }
-  responseFilter = (list, filterVal) => (list.filter(item => (item.shelf === filterVal)));
-
+  
   componentDidMount() {
-    this.loadData();
-  }
-
-  loadData() {
     BooksAPI.getAll()
       .then((response) => {
-        this.processResponse(response);
+        this.setState({ books: response });
       });
   }
 
-  processResponse = (response) => {
-    this.setAssignment(this.state.CR, this.responseFilter(response, this.state.CR));
-    this.setAssignment(this.state.R, this.responseFilter(response, this.state.R));
-    this.setAssignment(this.state.WTR, this.responseFilter(response, this.state.WTR));
-  }
-
-  setAssignment = (prop, books) => {
-    this.setState(currState => ({
-      ...currState, books: {
-        ...currState.books, [prop]: books
-      }
-    }))
-  }
-
   onShelfChange = (book, newShelf) => {
-    //console.log(`${newShelf} ${book.id}`);
     BooksAPI.update(book, newShelf)
       .then(response => {
-        this.loadData();
+        book.shelf = newShelf;
+        this.setState(currState => ({
+          books: currState.books.filter(b => b.id !== book.id).concat(book)
+        }))
       });
   }
 
   render() {
     return (
       <div className="app">
-
+        {/* Home Component */}
         <Route path='/' exact render={() => (
           <div className="list-books">
             <div className="list-books-title">
@@ -73,8 +49,9 @@ class BooksApp extends React.Component {
           </div>
         )} />
 
+        {/* Search Component */}
         <Route path='/search' render={() => (
-          <SearchPage handleShelfChange={this.onShelfChange} bookCase={this.state.books}  />
+          <SearchPage handleShelfChange={this.onShelfChange} books={this.state.books}  />
         )} />
 
       </div>

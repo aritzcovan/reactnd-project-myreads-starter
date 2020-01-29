@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link }  from 'react-router-dom';
 import Book from './Book';
 import * as BooksAPI from './BooksAPI'
-
+import propTypes from 'prop-types';
 
 class SearchPage extends Component {
-
+    
     state = {
         query: '',
         books: [],
@@ -27,9 +27,7 @@ class SearchPage extends Component {
         }
     };
 
-    render() {
-
-        
+    render() {       
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -44,7 +42,7 @@ class SearchPage extends Component {
                         <ol className="books-grid">
                             {this.state.books.map(book => 
                                 <li key={book.id}>
-                                    <Book book={book} handleShelfChange={this.props.handleShelfChange} bookCase={this.props.bookCase} />
+                                    <Book book={book} handleShelfChange={this.props.handleShelfChange} allBooks={this.props.books} />
                                 </li>
                             )}
                         </ol>
@@ -54,9 +52,12 @@ class SearchPage extends Component {
                      )}
                 </div>
             </div>
-
         );
     }
 }
 
+SearchPage.PropTypes = {
+    handleShelfChange: propTypes.func.isRequired,
+    allBooks: propTypes.array.isRequired
+}
 export default SearchPage;

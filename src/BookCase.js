@@ -1,21 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BookCaseShelf from './BookCaseShelf';
+import propTypes from 'prop-types';
 
-class BookCase extends Component {
-
-    render() {
-        const allBooks = this.props.books;
-        const { currentlyReading, wantToRead, read } = this.props.books;
-
-        return (
-            <div>
-                <BookCaseShelf books={currentlyReading} shelfTitle="Reading" handleShelfChange={this.props.handleShelfChange} bookCase={allBooks} />
-                <BookCaseShelf books={wantToRead} shelfTitle="Want to Read" handleShelfChange={this.props.handleShelfChange} bookCase={allBooks} />
-                <BookCaseShelf books={read} shelfTitle="Read" handleShelfChange={this.props.handleShelfChange} bookCase={allBooks} />
-            </div>
-        );
+const BookCase = (props) => {
+    BookCase.PropTypes = {
+        books: propTypes.array.isRequired,
+        shelfTitle: propTypes.string.isRequired,
+        handleShelfChange: propTypes.func.isRequired
     }
+    
+    const allBooks = props.books;
+    const getBooksForShelf = (shelfName) => (
+        allBooks.filter(book => book.shelf === shelfName)
+    );
 
+    return (
+        <div>
+            <BookCaseShelf books={getBooksForShelf('currentlyReading')} shelfTitle="Reading" handleShelfChange={props.handleShelfChange} />
+            <BookCaseShelf books={getBooksForShelf('wantToRead')} shelfTitle="Want to Read" handleShelfChange={props.handleShelfChange} />
+            <BookCaseShelf books={getBooksForShelf('read')} shelfTitle="Read" handleShelfChange={props.handleShelfChange} />
+        </div>
+    );
 }
-
 export default BookCase;
