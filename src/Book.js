@@ -7,7 +7,7 @@ class Book extends Component {
         let selectedShelf = 'none';
         const book = this.props.book;
         const bookCase = this.props.bookCase;
-        console.log(bookCase);
+        
 
         //check if this book is currently in the book case and if so, set the proper shelf
         const allBooks = [...bookCase.currentlyReading, ...bookCase.read, ...bookCase.wantToRead];

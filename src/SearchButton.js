@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 const SearchButton = () => {
     return (
         <div className="open-search">
-            {/* <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button> */}
-            {/* <button to='/search'>Add a book</button> */}
-            <Link to="/search">Add a book</Link>
+            
+                <Link to="/search">
+                    <button className="open-search-button"></button>    
+                </Link>
+            
         </div>
     );
 }
